@@ -21,8 +21,6 @@ const inps = document.querySelectorAll('input');
 frm.addEventListener('submit', (event) => {
 	event.preventDefault();
 	checkInputs();
-	// console.log(val1, val2, val3, val4, val5, val6);
-	// console.log( typeof val1, val2, val3, val4, val5, val6);
 	if (val1 && val2 && val3 && val4 && val5 && val6) {
 		frm.submit();
 	}
@@ -31,15 +29,13 @@ frm.addEventListener('submit', (event) => {
 let events = ["keyup", "change"];
 
 inps.forEach(inp => {
-    events.forEach(event => {
-        inp.addEventListener(event, checkInputs);
-    });
+	events.forEach(event => {
+		inp.addEventListener(event, checkInputs);
+	});
 });
 
 
-
 function checkInputs() {
-	// trim to remove the whitespaces
 	const firstnameValue = firstname.value.trim();
 	const surnameValue = surname.value.trim();
 	const emailValue = mail.value.trim();
@@ -47,16 +43,18 @@ function checkInputs() {
 	const passwordValue = pass.value.trim();
 
 	if (firstnameValue === '') {
-		val1 = setErrorFor(firstname, 'First name cannot be blank');		
-	}
-	else {
+		val1 = setErrorFor(firstname, 'First name cannot be blank');
+	} else if (!(isName(firstnameValue))) {
+		val1 = setErrorFor(firstname, 'Invalid First name');
+	} else {
 		val1 = setSuccessFor(firstname, 'Valid FirstName');
 	}
 
 	if (surnameValue === '') {
 		val2 = setErrorFor(surname, 'Surname cannot be blank');
-	}
-	else {
+	} else if (!(isName(surnameValue))) {
+		val2 = setErrorFor(surname, 'Invalid Sur name');
+	} else {
 		val2 = setSuccessFor(surname, 'Valid Surname');
 	}
 
@@ -87,6 +85,13 @@ function checkInputs() {
 
 	if (passwordValue === '') {
 		val6 = setErrorFor(pass, 'Password cannot be blank');
+	} else if (!(isPass(passwordValue))) {
+		val6 = setErrorFor(pass, `Password should contains:
+			At least 8 characters
+			At least one uppercase letter (A-Z)
+			At least one lowercase letter (a-z)
+			At least one digit (0-9)
+			At least one special character (@, #, $, etc.)`)
 	} else {
 		val6 = setSuccessFor(pass, 'Valid Password');
 	}
@@ -98,6 +103,14 @@ function isEmail(email) {
 
 function isNum(mob) {
 	return /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/.test(mob);
+}
+
+function isName(nameValue) {
+	return /^[A-Za-z][A-Za-z' -]{1,49}$/.test(nameValue);
+}
+
+function isPass(passValue) {
+	return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(passValue);
 }
 
 function radioErrorFor() {
@@ -153,4 +166,6 @@ function setSuccessFor(input, message) {
 	small.innerText = message;
 	return true;
 }
+
+
 

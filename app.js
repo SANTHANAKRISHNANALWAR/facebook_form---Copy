@@ -16,6 +16,7 @@ const radi = document.querySelectorAll('.formradio');
 
 const radiosmall = document.querySelector('.radiosmall');
 
+const inps = document.querySelectorAll('input');
 
 frm.addEventListener('submit', (event) => {
 	event.preventDefault();
@@ -26,6 +27,16 @@ frm.addEventListener('submit', (event) => {
 		frm.submit();
 	}
 });
+
+let events = ["keyup", "change"];
+
+inps.forEach(inp => {
+    events.forEach(event => {
+        inp.addEventListener(event, checkInputs);
+    });
+});
+
+
 
 function checkInputs() {
 	// trim to remove the whitespaces
